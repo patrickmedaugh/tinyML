@@ -54,3 +54,6 @@ model_1.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
 # Print a summary of the model's architecture
 model_1.summary()
 
+
+## TRAINING OUR MODEL ##
+history_1 = model_1.fit(x_train, y_train, epochs=1000, batch_size=16, validation_data=(x_validate, y_validate))
