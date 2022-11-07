@@ -57,3 +57,68 @@ model_1.summary()
 
 ## TRAINING OUR MODEL ##
 history_1 = model_1.fit(x_train, y_train, epochs=1000, batch_size=16, validation_data=(x_validate, y_validate))
+loss = history_1.history['loss']
+val_loss = history_1.history['val_loss']
+
+epochs = range(1, len(loss) + 1)
+
+# plt.plot(epochs, loss, 'g.', label='Training loss')
+# plt.plot(epochs, val_loss, 'b', label='Validation loss')
+# plt.title('Training and validation loss')
+# plt.xlabel('Epochs')
+# plt.ylabel('Loss')
+# plt.legend()
+# plt.show()
+
+# Exclude the first few epochs so the graph is easier to read
+SKIP = 100
+
+plt.plot(epochs[SKIP:], loss[SKIP:], 'g.', label='Training loss')
+plt.plot(epochs[SKIP:], val_loss[SKIP:], 'b.', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+# Draw a graph of mean absolute error, which is another way of
+# measuring the amount of error in the prediction.
+mae = history_1.history['mae']
+val_mae = history_1.history['val_mae']
+
+plt.plot(epochs[SKIP:], mae[SKIP:], 'g.', label='Training MAE')
+plt.plot(epochs[SKIP:], val_mae[SKIP:], 'b.', label='Validation MAE')
+plt.title('Training and validation mean absolute error')
+plt.xlabel('Epochs')
+plt.ylabel('MAE')
+plt.legend()
+plt.show()
+
+# Use the model to make predictions from our validation data
+predictions = model_1.predict(x_train)
+
+# Plot the predictions along with the test data
+plt.clf()
+plt.title('Training data predicted vs actual values')
+plt.plot(x_test, y_test, 'b.', label='Actual')
+plt.plot(x_train, predictions, 'r.', label='Predicted')
+plt.legend()
+plt.show()
+
+model_2 = tf.keras.Sequential()
+
+# First layer takes a scalar input and feeds it through 16 "neurons." The
+# neurons decide whether to activate based on the 'relu' activation function.
+model_2.add(layers.Dense(16, activation='relu', input_shape=(1,)))
+
+# The new second layer may help the network learn more complex representations
+model_2.add(layers.Dense(16, activation='relu'))
+
+# Final layer is a single neuron, since we want to output a single value
+model_2.add(layers.Dense(1))
+
+# Compile the model using a standard optimizer and loss function for regression
+model_2.compile(optimizer='rmsprop', loss='mse', metrics=['mae'])
+
+# Show a summary of the model
+model_2.summary()
