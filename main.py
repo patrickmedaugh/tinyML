@@ -24,8 +24,8 @@ y_values = np.sin(x_values)
 y_values += 0.1 * np.random.randn(*y_values.shape)
 
 # Plot our data. The 'b.' argument tells the library to print blue dots.
-# plt.plot(x_values, y_values, 'b.')
-# plt.show()
+plt.plot(x_values, y_values, 'b.')
+plt.show()
 
 
 # We'll use 60% of our data for training and 20% for testing. The remaining 20%
